@@ -1,0 +1,21 @@
+# Sana Project Root Gitignore
+
+# Node modules
+node_modules/
+
+# Frontend builds
+Frontend/dist/
+Frontend/.env*
+
+# Supabase
+supabase/.temp/
+supabase/functions/*/node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Gemini/Antigravity logs & brains
+.gemini/
+brain/
+*.log
