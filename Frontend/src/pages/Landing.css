@@ -267,9 +267,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('/Images/hero.png') center/cover no-repeat;
-    z-index: -2;
-    animation: zoomIn 20s ease-out infinite alternate;
+    background-image: url('/Images/hero.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+    animation: zoomIn 25s ease-out infinite alternate;
 }
 
 @keyframes zoomIn {
@@ -278,7 +281,7 @@
     }
 
     to {
-        transform: scale(1.1);
+        transform: scale(1.08);
     }
 }
 
@@ -288,12 +291,20 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(10, 10, 10, 0.9) 0%, rgba(10, 10, 10, 0.5) 50%, rgba(10, 10, 10, 0.9) 100%);
-    z-index: -1;
+    background: linear-gradient(
+        105deg,
+        rgba(10, 10, 10, 0.92) 0%,
+        rgba(10, 10, 10, 0.75) 40%,
+        rgba(10, 10, 10, 0.35) 70%,
+        rgba(10, 10, 10, 0.5) 100%
+    );
+    z-index: 2;
 }
 
 .landing-page .hero-content {
     max-width: 800px;
+    position: relative;
+    z-index: 3;
 }
 
 .landing-page .hero-title {

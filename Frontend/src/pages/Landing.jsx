@@ -267,6 +267,14 @@ const Landing = ({ onLoginClick }) => {
             amount: Math.round(totalAmount * 100), // In kobo/pesewas
             currency: 'GHS',
             ref: 'SANA-' + Math.floor((Math.random() * 1000000000) + 1),
+            metadata: {
+                full_name: checkoutData.name,
+                phone: checkoutData.phone,
+                location: checkoutData.location,
+                address: checkoutData.address,
+                model: checkoutData.model,
+                quantity: checkoutData.quantity
+            },
             callback: function (response) {
                 // Call the bridge to async fulfillment
                 fulfillOrder(response);
@@ -552,7 +560,7 @@ const Landing = ({ onLoginClick }) => {
                                 <option value="Sana Homes Heavy Duty">Sana Homes Heavy Duty</option>
                             </select>
                         </div>
-                        <button type="submit" className="btn" style={{ width: '100%' }}>{submitStatus}</button>
+                        <button type="submit" className="btn" style={{ width: '100%' }}>{submitStatus || 'Submit Order'}</button>
                     </form>
                 </div>
             </section>
@@ -686,7 +694,7 @@ const Landing = ({ onLoginClick }) => {
                                 </div>
                                 <h3 style={{ color: 'white', marginBottom: '1rem' }}>Order Confirmed! ID: {lastOrder}</h3>
                                 <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-                                    Thank you ${checkoutData.name}, your payment was successful. We will contact you at ${checkoutData.phone} to arrange delivery.
+                                    Thank you <strong style={{ color: 'white' }}>{checkoutData.name}</strong>, your payment was successful. We will contact you at <strong style={{ color: 'var(--accent)' }}>{checkoutData.phone}</strong> to arrange delivery.
                                 </p>
                                 <button className="btn" style={{ width: '100%' }} onClick={() => setCheckoutOpen(false)}>Close</button>
                             </div>

@@ -21,7 +21,7 @@ serve(async (req) => {
     }
 
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey)
-    const { reference } = await req.json()
+    const { reference, checkoutData } = await req.json()
     console.log(`[LOG] Verifying reference: ${reference}`)
 
     // 0. Check if order already exists for this reference (prevent replays)
@@ -51,7 +51,27 @@ serve(async (req) => {
       throw new Error(`Paystack says: ${paystackData.message || 'Verification Failed'}`)
     }
 
-    const { amount, customer, metadata } = paystackData.data
+    // CRITICAL: Verify the actual transaction status is 'success'
+    const txStatus = paystackData.data?.status
+    if (txStatus !== 'success') {
+      console.warn(`[WARN] Transaction not successful. Status: ${txStatus}`)
+      return new Response(
+        JSON.stringify({ success: false, error: `Payment not completed. Transaction status: ${txStatus}` }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 200 }
+      )
+    }
+
+    const { amount, customer, metadata: paystackMetadata } = paystackData.data
+    // Combine Paystack metadata with checkoutData fallback
+    const metadata = {
+        full_name: paystackMetadata?.full_name || checkoutData?.name || customer.email,
+        phone: paystackMetadata?.phone || checkoutData?.phone || '',
+        location: paystackMetadata?.location || checkoutData?.location || 'Paystack Online',
+        address: paystackMetadata?.address || checkoutData?.address || '',
+        model: paystackMetadata?.model || checkoutData?.model || 'Tricycle',
+        quantity: paystackMetadata?.quantity || checkoutData?.quantity || 1
+    }
+    
     console.log(`[LOG] Payment details: ₵${amount/100} from ${customer.email}`)
 
     // 2. Insert order
@@ -59,15 +79,15 @@ serve(async (req) => {
     const { data: order, error: orderError } = await supabaseAdmin
       .from('orders')
       .insert([{
-        customer: metadata?.full_name || customer.email,
+        customer: metadata.full_name,
         email: customer.email,
-        phone: metadata?.phone || '',
-        address: metadata?.address || '',
-        location: metadata?.location || 'Paystack Online',
-        product: metadata?.model || 'Tricycle',
-        quantity: metadata?.quantity || 1,
+        phone: metadata.phone,
+        address: metadata.address,
+        location: metadata.location,
+        product: metadata.model,
+        quantity: metadata.quantity,
         amount: `₵${(amount / 100).toLocaleString()}`,
-        status: 'pending',
+        status: 'completed',
         date: new Date().toISOString().split('T')[0],
         payment_ref: reference
       }])
