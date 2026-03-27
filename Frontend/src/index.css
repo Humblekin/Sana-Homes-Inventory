@@ -79,9 +79,19 @@ body {
   color: var(--accent);
 }
 
-.logo i {
-  font-size: 1.5rem;
-  color: var(--accent);
+.logo img {
+  height: 32px;
+  width: auto;
+  animation: logoFloat 4s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
 }
 
 .logo-text {

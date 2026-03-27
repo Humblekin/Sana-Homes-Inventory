@@ -342,8 +342,8 @@ const Landing = ({ onLoginClick }) => {
                 <div className="container">
                     <div className="navbar-container">
                         <a href="#home" className="logo" onClick={(e) => scrollToSection(e, 'home')}>
-                            <i className="fas fa-tricycle"></i>
-                            Sana Homes
+                            <img src="/Images/sana_logo.png" alt="Sana Homes Logo" style={{ height: '40px', width: 'auto' }} />
+                            <span>Sana Homes</span>
                         </a>
                         <ul className={`nav-menu ${mobileMenuOpen ? 'active' : ''}`}>
                             <li><a href="#home" className={`nav-link ${activeSection === 'home' ? 'active' : ''}`} onClick={(e) => scrollToSection(e, 'home')}>Home</a></li>

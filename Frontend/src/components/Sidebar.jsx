@@ -19,8 +19,8 @@ const Sidebar = ({ sidebarCollapsed, setSidebarCollapsed, mobileMenuActive, acti
     <aside className={`sidebar ${sidebarCollapsed ? 'collapsed' : ''} ${mobileMenuActive ? 'active' : ''}`} id="sidebar">
       <div className="sidebar-header">
         <a href="#" className="logo">
-          <i className="fas fa-tricycle"></i>
-          <span className="logo-text">TriLux Admin</span>
+          <img src="/Images/sana_logo.png" alt="Sana Logo" style={{ height: '32px', width: 'auto' }} />
+          <span className="logo-text">Sana Admin</span>
         </a>
         <button className="toggle-sidebar" id="toggleSidebar" onClick={() => setSidebarCollapsed(!sidebarCollapsed)}>
           <i className={`fas ${sidebarCollapsed ? 'fa-align-right' : 'fa-align-left'}`}></i>
